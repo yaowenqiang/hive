@@ -5,4 +5,10 @@
 > hadoop fs  -put
 > hadoop fs  -get
 > hadoop fs  -cp
+> hadoop fs  -rm
+> hadoop fs  -rmr -skipTrash
+> hadoop fs  -cat
+> 
+
+> 
 
