@@ -27,3 +27,18 @@ union all
 select col_1 + col_b as mycol 
 from another_table;
 
+> select t3.mycol 
+from (
+select col_1 + col_b as mycol 
+from some_table
+union all
+    select col_my as mycol
+    from another_table
+     ) t3
+     join t4 on (t4.col_x = t3.mycol);
+
+>
+CREATE (DATABASE|SCHEMA) [IF NOT EXISTS] database_ name
+[COMMENT some_comment]
+[LOCATION hdfs_path]
+[withdbproperties(property_name=property_value...)]
