@@ -119,3 +119,135 @@ hive> create table occupation_count2 like occupation_count;
 
 ## Data Types
 
+## Primitive Data Types
+
++ Numeric
+  + TINYINT, SMALLINT, INT, BIGINT
+  + FLOAT
+  + DOUBLE
+  + DEDIMAL
++ Date/Time
+  + timestamp 
+    + string must be in format "YYYY-MM-DD HH:MM:SS ffffffff"
+    + integers types as UNIX timestamp in seconds from UNIX epoch
+    + Floating point types same as integer with decimal precision
+  + Date
++ Misc
+  + BOOLEAN
+  + STRING
+  + BINARY
+
+## Complex/Collection Types
+
++ Arrays ARRAY<data_type>
++ Maps MAP<primitive_type, data_tpe>
++ Struct  struct<col:name: data_type[comment col_comment]...>
++ Union Type <UNIONTYPE <data_type, data_type, ...>
+
+
+'''
+create table movies (
+    movie_name, string,
+    participants array<string>,
+    release_dates map<string, timestamp>,
+    studio_addr struct<state:string, city:string, zip:string, streetnbr:int, streetname:string, unit:string>,
+    complex_participants map<string, struct<address:string, attributes:map<string, string>>>,
+    misc uniontype<int, string, array<double>>
+)
+'''
+
+'''
+
+select movie_name,
+    release_date['USA'],
+    studio_addr.zip,
+    complex_participants['Leonardo Dicaprio'].attributes['fav_color'].mics,
+    from movies;
+
+'''
+
+"inception" | 2010-07-16 00:00:00 | 91505 | "Dark Green" | {0:800}
+"inception" | 2010-07-16 00:00:00 | 91505 | "Green" | {2:[1.0, 2.3, 5.6]}
+
+### Type onversions
+
+#### Explicit Conversion
+
+case('13' as int)
+case('This results is NULL' as int)
+case('2.0' as float)
+cast(cast(binary_data as string) as double)
+
+
+## Table Partitions
+j
+
+## Managed Partioned Tables
+
+'''
+create table page_views (
+    eventTime STRING,
+    userid STRING,
+    page STRING
+)
+
+
+partitioned by (dt string, applicationtype string)
+stored as textfile
+
+'''
+
+## External Partioned Tables
+
+'''
+create external table page_views (
+    eventTime STRING,
+    userid STRING,
+    page STRING
+)
+
+partitioned by (dt string, applicationtype string)
+stored as textfile
+
+'''
+
+
+'''
+
+alter table page_views add partition(dt='2013-03-92', applicationtype='Windows Phone')
+location '/somewhere/on/hdfs/data';
+
+alter table page_views add partition(dt='2013-03-92', applicationtype='iphone')
+location 'hdfs://NameNode/somewhee/';
+
+alter table page_views add if not exists
+partition(dt='2013-09=09',applicationtype='iphone') location=''
+partition(dt='2013-09=08',applicationtype='iphone') location=''
+partition(dt='2013-09=07',applicationtype='iphone') location=''
+'''
+
+### demo
+
+'''
+create external table page_view_ext(
+    logtime string, userid string, ip string, page string, ref string, os string, os_ver string, agent string
+)
+row formate delimited
+fields terminated by "\t"
+location "logs/page_ext/"
+
+'''
+
+'''
+create external table page_view_ext(
+    logtime string, userid string, ip string, page string, ref string, os string, os_ver string, agent string
+)
+partitioned by (y string, m string, d string)
+row formate delimited
+fields terminated by "\t"
+location "logs/page_ext/"
+'''
+
+'''
+    alter table page_view_ext add partition (y='2013', m='07', d='11') location 'logs/pk_ext/'
+'''
