@@ -251,3 +251,25 @@ location "logs/page_ext/"
 '''
     alter table page_view_ext add partition (y='2013', m='07', d='11') location 'logs/pk_ext/'
 '''
+
+
+### Multiple inserts
+
+from from_statement
+    insert overwrite table table[partition(part.col1=col1, partcol2=val2][select_statment1])
+    insert into table table2[partition(part.col1=col1, partcol2=val2][if not exists][select_statment2])
+    insert overwrite directory'path' select_statment3<F3>;
+
+
+'''
+    from movies
+        insert overwrite table horror_movies select * where horror = 1 and release_date = '8/25/2015'
+        insert into action_movies select * where action=1 and release_date=''<F3>8/25/2015;
+'''
+
+'''
+    from (select * from movies where release_date = '8/23/2015') src
+    insert overwrite table horror_movies select * where horror=1
+    insert into action_movies select * where action=1
+
+'''
