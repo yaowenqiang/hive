@@ -272,4 +272,30 @@ from from_statement
     insert overwrite table horror_movies select * where horror=1
     insert into action_movies select * where action=1
 
+
+select 
+    a, b, sum(c)
+from t1
+group by
+    a, b
+
+
+select a, b, sum(c) from t1 group by a, b, grouping sets ((a, b), a)
 '''
+equal to 
+
+
+select a, b, sum(c) from t1 group by a, b
+union all
+select a, null, sum(c) from t1 group by a
+
+
+select a, b, sum(c) from t1 group by a, b grouping sets(a, b, ())
+
+equal to
+
+select a, null, sum(c) from t1 group by a
+union all
+ select null, b, sum(c) from t1 group by b
+ union all
+ select null, null, sum(c) from t
