@@ -299,3 +299,11 @@ union all
  select null, b, sum(c) from t1 group by b
  union all
  select null, null, sum(c) from t
+
+
+## Bucketing
+
+
+create table t1(a int,  b string, cstring) clustered (b) into 256 buckets
+
+
