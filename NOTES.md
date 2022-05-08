@@ -307,3 +307,9 @@ union all
 create table t1(a int,  b string, cstring) clustered (b) into 256 buckets
 
 
+
+## Bucket Sampling
+
+
+select * from source tablesample(bucket x out of y[on colname])
+
