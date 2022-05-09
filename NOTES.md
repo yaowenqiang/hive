@@ -313,3 +313,27 @@ create table t1(a int,  b string, cstring) clustered (b) into 256 buckets
 
 select * from source tablesample(bucket x out of y[on colname])
 
+
+## Join
+
+### Inner join
+
+select a.val, b.val from a join b on (a.key = b.key)
+
+### left, right ,full[outer] join
+
+select a.val, b.val from a left outer join b on (a.key = b.key) join c on (c.key = a.key)
+
+
+### left semi join
+
+select a.val from a where a.key in (select bkey from b)  - note supported
+select a.val from a where exists(select 1 from b where b.key = a.key) - not supported
+
+select a.val from a left semi join b on (a.key = b.key);
+
+
+### cross join
+
+
+
