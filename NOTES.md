@@ -335,5 +335,11 @@ select a.val from a left semi join b on (a.key = b.key);
 
 ### cross join
 
+### bucketed tables
 
+
+## Distributed cache
+
+add file mdata.txt;
+add archive sendme.zip
 
