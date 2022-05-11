@@ -342,4 +342,17 @@ select a.val from a left semi join b on (a.key = b.key);
 
 add file mdata.txt;
 add archive sendme.zip
+add jar myprogram.jar
+>list files | jars | archives [filepath];
+
+
+
+## Extend hive
+
+
+> @description
+> __FUNC__
+
+
+
 
