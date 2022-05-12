@@ -355,4 +355,11 @@ add jar myprogram.jar
 
 
 
+## Hadoop Streaming
+
+> select transform (col1, [col2, col3])
+    using 'code file | program' [as (list of columns [and casts])]
+    from SourceTable;
+
+
 
