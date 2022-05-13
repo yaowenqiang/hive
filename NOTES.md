@@ -361,5 +361,15 @@ add jar myprogram.jar
     using 'code file | program' [as (list of columns [and casts])]
     from SourceTable;
 
+## Windowing and Analytic Functions 
+
+LEAD/LAG
+
+first_value
+last_value
+partition by
+over
+window
+
 
 
