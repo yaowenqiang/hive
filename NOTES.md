@@ -371,5 +371,32 @@ partition by
 over
 window
 
+##  File Formats and SerDes
+
++ row format
+
+
+> stored as 
+
++ Text file
+
+>   input format "org.apache.hadoop.mapred.TextInputFormat"
+    outputformat "org.apache.hadoop.hive.qLioHiveIgnoreKeyTextOutput"
+    row format serde "org.apache.hadoop.hive.serde2lazy"
+
++ Sequence File
+
+>   input format "org.apache.hadoop.mapred.SequenceFileInputFormat"
+    outputformat "org.apache.hadoop.hive.HiveSequenceFileOutputFormat"
+    row format serde "org.apache.hadoop.hive.serde2.lazyLazySimpleSerDe"
+
+
++ stored as 
+  + textfile
+
+SerDe
+
+
+
 
 
