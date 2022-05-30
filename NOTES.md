@@ -4,6 +4,11 @@
 > hadoop fs -ls /
 > wget https://www.grouplens.org/system/files/ml-100k.zip
 > hadoop fs  -put
+> hadoop fs -mkdir   /demo/
+> hadoop fs -mkdir   /demo/movies/
+> hadoop fs -mkdir   /demo/users/
+> hadoop fs -put u.item  /demo/movies/
+> hadoop fs -put u.info  /demo/users/
 > hadoop fs  -copyFromLocal
 > hadoop fs  -get
 > hadoop fs  -copyToLocal
@@ -82,19 +87,43 @@ create [external]table[if not exists][db_name]table_name
 > describe database_name # can see db location
 
 '''
-CREATE TABLE movies(
-    movie_id INT
-    ...
+create table movies (
+    movie_id INT,
+    movie_title STRING,
+    release_date STRING,
+    video_release_date STRING,
+    imdb_url STRING,
+    unknown INT,
+    action INT,
+    adventure INT,
+    animation INT,
+    children INT,
+    comedy INT,
+    crime INT,
+    documentary INT,
+    drema INT,
+    fantasy INT,
+    film_noir INT,
+    horror INT,
+    musical INT,
+    mystery INT,
+    romance INT,
+    sci_fi INT,
+    thrillier INT,
+    war INT,
+    Western INT
 )
-
-ROW FORMAT DELIMITED
-FIELDS TERMINATED BY "|"
-STORED AS TEXTFILE;
+ row format delimited
+ fields terminated by "|"
+ stored as textfile;
 
 '''
 
+> hadoop  fs -ls  /apps/hive/warehouse/
 
 hive > LOAD DATA INPATH
+hive > load data inpath "/demo/movies" into table movies;
+
 hive > LOAD DATA INPATH  'demo/movies/' overwrite into table movies; this will move the data if file is on the hdfs, if file is local ,the file will be copied to hdfs
 
 
