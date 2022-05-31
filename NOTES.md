@@ -156,7 +156,7 @@ hive> create table occupation_count2 like occupation_count;
   + DOUBLE
   + DEDIMAL
 + Date/Time
-  + timestamp 
+  + ttimestamp 
     + string must be in format "YYYY-MM-DD HH:MM:SS ffffffff"
     + integers types as UNIX timestamp in seconds from UNIX epoch
     + Floating point types same as integer with decimal precision
@@ -188,6 +188,7 @@ create table movies (
 '''
 
 select movie_name,
+    participants[0],
     release_date['USA'],
     studio_addr.zip,
     complex_participants['Leonardo Dicaprio'].attributes['fav_color'].mics,
@@ -198,7 +199,7 @@ select movie_name,
 "inception" | 2010-07-16 00:00:00 | 91505 | "Dark Green" | {0:800}
 "inception" | 2010-07-16 00:00:00 | 91505 | "Green" | {2:[1.0, 2.3, 5.6]}
 
-### Type onversions
+### Type conversions
 
 #### Explicit Conversion
 
@@ -209,9 +210,9 @@ cast(cast(binary_data as string) as double)
 
 
 ## Table Partitions
-j
 
-## Managed Partioned Tables
+
+## Managed Partitioned Tables
 
 '''
 create table page_views (
@@ -220,13 +221,34 @@ create table page_views (
     page STRING
 )
 
-
 partitioned by (dt string, applicationtype string)
-stored as textfile
+stored as textfile;
 
 '''
 
-## External Partioned Tables
+
+'''
+    LOAD DATA INPATH "/mydata/android/Aug_10_2013/pageviews/" into  table page_views
+    partition(dt="2013-108-10", applicationtype="android")
+'''
+
+'''
+    LOAD DATA INPATH "/mydata/android/Aug_10_2013/pageviews/" 
+    OVERWRITE INTO  table page_views
+    partition(dt="2013-108-10", applicationtype="android")
+'''
+
+## Virtual Partition Columns
+
+
+'''
+    select dt as eventDate, page, count(*) as previewCount from page_views where applicationtype="iphone" group by  dt, page;
+'''
+
+
+
+
+## External Partitioned Tables
 
 '''
 create external table page_views (
