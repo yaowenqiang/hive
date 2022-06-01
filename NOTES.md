@@ -283,9 +283,9 @@ partition(dt='2013-09=07',applicationtype='iphone') location=''
 create external table page_view_ext(
     logtime string, userid string, ip string, page string, ref string, os string, os_ver string, agent string
 )
-row formate delimited
+row format delimited
 fields terminated by "\t"
-location "logs/page_ext/"
+location "/logs/page_ext/";
 
 '''
 
@@ -294,13 +294,16 @@ create external table page_view_ext(
     logtime string, userid string, ip string, page string, ref string, os string, os_ver string, agent string
 )
 partitioned by (y string, m string, d string)
-row formate delimited
+row format delimited
 fields terminated by "\t"
-location "logs/page_ext/"
+location "/logs/page_ext/";
 '''
+> hadoop fs  -put   log_2013811_16136.log  /logs/pv_ext/somedata_for_7_11
+
 
 '''
-    alter table page_view_ext add partition (y='2013', m='07', d='11') location 'logs/pk_ext/'
+    alter table page_view_ext add partition (y='2013', m='07', d='11') location "/logs/pv_ext/somedata_for_7_11";"
+    '
 '''
 
 
