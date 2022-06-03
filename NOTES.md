@@ -316,13 +316,13 @@ location "/logs/page_ext/";
 from from_statement
     insert overwrite table table[partition(part.col1=col1, partcol2=val2][select_statment1])
     insert into table table2[partition(part.col1=col1, partcol2=val2][if not exists][select_statment2])
-    insert overwrite directory'path' select_statment3<F3>;
+    insert overwrite directory'path' select_statment3;
 
 
 '''
     from movies
         insert overwrite table horror_movies select * where horror = 1 and release_date = '8/25/2015'
-        insert into action_movies select * where action=1 and release_date=''<F3>8/25/2015;
+        insert into action_movies select * where action=1 and release_date=''8/25/2015;
 '''
 
 '''
@@ -330,6 +330,30 @@ from from_statement
     insert overwrite table horror_movies select * where horror=1
     insert into action_movies select * where action=1
 
+## Dynamic Partition inserts
+
+    '''
+    create table views_stg(eventTime string, userid String) partitioned by (dt string, applicationtype string, page string);
+    '''
+
+    '''
+    from page_view_ext src
+    insert overwrite table views_stg partition(dt='2013-09-13', applicationtype='Web', page='Home')
+        select src.eventTime, src.userid where dt='2013-09-13' and applicationtype='Web' and  page='Home'
+    insert overwrite table views_stg partition(dt='2013-09-14', applicationtype='Web', page='Cart')
+        select src.eventTime, src.userid where dt='2013-09-13' and applicationtype='Web', page='Cart'
+    insert overwrite table views_stg partition(dt='2013-09-15', applicationtype='Web', page='Checkout')
+        select src.eventTime, src.userid where dt='2013-09-13' and applicationtype='Web', page='Checkout'
+    '''
+
+    '''
+    from page_views src
+        insert overwrite table views_stg partition(applicationtype='Web', db, page)
+        select src.eventtime, src.userid, src.dt, src.page where applicationtype='Web'
+    '''
+
++ Dynamically determine partitions to create and populate
++ Use input date to determine partitions
 
 select 
     a, b, sum(c)
