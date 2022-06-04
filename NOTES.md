@@ -355,6 +355,19 @@ from from_statement
 + Dynamically determine partitions to create and populate
 + Use input date to determine partitions
 
++ Default maxinum dynamic partitions=1000
+  + hive.exec.max.dynamic.partitions
+  + hive.exec.max.dynamic.partitions.permode
++ Enable/Disbale dynamic partitions inserts
+  + hive.exec.dynamic.partition=true
++ Use stric mode when in doubt
+  + hive.exec.dynamic.partition.mode=strict
++ Increase max number of files a data node can service in (hdfs-sit.xml)
+  + dfs.datanode.max.xclevers=4096
+
+
+
+
 select 
     a, b, sum(c)
 from t1
