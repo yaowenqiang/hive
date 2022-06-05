@@ -366,7 +366,34 @@ from from_statement
   + dfs.datanode.max.xclevers=4096
 
 
+> hive > SET hive.exec.dyamic.partition.mode=nostrict;
 
+'''
+create external table staging(
+logtime string,
+userid int,
+ip string,
+page string,
+ref string,
+os string,
+os_ver string,
+agent string)
+row format delimited
+fields terminated by "\t"
+location '/data/logs/multi_insert';
+
+'''
+
+> hadoop fs -mkdir /logs/multi_insert/
+> hadoop fs -put logs/*.log /logs/multi_insert/
+
+
+   '''
+insert into table page_views partition(y, m, d) 
+select logtime, useerid, ip, page, ref, os, os_ver, agent, substr(logtime, 7,4), substr(lgtiem, 1,2), substr(logtime, 4,2)
+from staging;
+
+   '''
 
 select 
     a, b, sum(c)
