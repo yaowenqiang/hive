@@ -393,7 +393,8 @@ insert into table page_views partition(y, m, d)
 select logtime, useerid, ip, page, ref, os, os_ver, agent, substr(logtime, 7,4), substr(lgtiem, 1,2), substr(logtime, 4,2)
 from staging;
 
-   '''
+# Hive Query Language
+
 
 select 
     a, b, sum(c)
@@ -422,6 +423,67 @@ union all
  union all
  select null, null, sum(c) from t
 
+
+## Cube
+
+'''
+select a, b, c, sum(d) from t1 group by a, b with cube
+'''
+
+'''
+select a, b , c, sum(d) from t1 group by a, b, ,c grouping sets
+((a,b,c), (a, b), (b,c), (a,c), a,b,c,())
+'''
+
+## rollup
+
+'''
+select a, b, c, sum(d) from t1 group by a, b with rollup
+'''
+
+'''
+select a, b, c, sum(d) from t1 group by a, b, c grouping sets
+((a,b,c), (a,b), a, ())
+
+# Functions in Hive
+
++ Built-in Functions
+  + Mathematical
+  + Collection
+  + Type conversion
+  + Date
+  + Conditonal
+  + String
+  + Misc
+  + xPath
++ UDAFs(user defined aggregate functions)
++ UDTFs(user defined table functions)
+'''
+
+
++ Mathematical
+
+'''
+select rand(), a from t1;
+select rand(3), rand(a) from t1;
+select pos(a, b) from t2;
+select tan(a) from t3;
+'''
+
+'''
+abs(doubel a)
+round(double a, int d)
+floor(double a)
+'''
+
++ Collections
+
+'''
+size(Map]<K,V>)
+map_keys(Map<K,V>)
+map_values(Map<K,v>)
+select array_contains(a, 'test') from t1;
+'''
 
 ## Bucketing
 
