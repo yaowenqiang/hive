@@ -1,3 +1,41 @@
+# Hive Architecture
+
++ Thift Server
+  + JDBC
+  + ODBC
+  + Hive CLI
+  + Hive Web UI
+  + HDInsight
++ HiveQL
++ MetaStore
++ Driver(Query processing, compiling , optimization)
+
+> SELECT * from my_table limit 100
+> This will not require any MapReduce at all
+
+
+Hive Principles - The Hive Warehouse
+
+Hive warehouse
+
++ Meta data about all the objects known to Hive, persisited in the meta store
++ Consists of
+  + Databases
+  + Tables
+  + Partitions
+  + Buckets/Clusters
++ Local Hive warehouse
+  + Managed by Hive
+  + Typically under /hive/warehouse
+  + Dropping a table will drop the data just as well as the meta-data.
++ External Tables
+  + Hive manages the meta-data only
+  + Anywhere on the Hadoop file system
+  + Dropping a table will only remove the table's definition, data remains untouched.
+
+
+
+
 > root
 > export HADOOP_USER_NAME=hive # specifiy non-root username
 > hadoop
@@ -27,6 +65,11 @@ ways to run hive commands
 + Hive Web UI
 + HDInsight
 
+
+exclude column
+
+set hive.support.quoted.identifiers=none;
+select `(code)?+.+` from sample_07 limit 1;
 
 ## HIVE syntax
 
@@ -176,7 +219,7 @@ hive> create table occupation_count2 like occupation_count;
 
 '''
 create table movies (
-    movie_name, string,
+    movie_name  string,
     participants array<string>,
     release_dates map<string, timestamp>,
     studio_addr struct<state:string, city:string, zip:string, streetnbr:int, streetname:string, unit:string>,
