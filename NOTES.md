@@ -343,10 +343,12 @@ location "/logs/page_ext/";
 '''
 > hadoop fs  -put   log_2013811_16136.log  /logs/pv_ext/somedata_for_7_11
 
-## Repaire partition
+
+
+## Repair partition
 
 > MSCK REPAIR table page_view_ext;
-> load data local into "/media/log" overwrite into table page_views partition(y='2022', m='66',d='01')
+> load data local INPATRH "/media/log" overwrite into table page_views partition(y='2022', m='66',d='01')
 
 '''
     alter table page_view_ext add partition (y='2013', m='07', d='11') location "/logs/pv_ext/somedata_for_7_11";"
@@ -527,6 +529,16 @@ map_keys(Map<K,V>)
 map_values(Map<K,v>)
 select array_contains(a, 'test') from t1;
 '''
+
+## The CLI
+
+> hive -e 'select a, b from t1 where c = 15'
+> hive -S -e 'select a, b from t1 where c = 15' > result.txt
+> hive -f /my/local/file/.sql
+
+
+## Variable Substitution
+
 
 ## Bucketing
 
