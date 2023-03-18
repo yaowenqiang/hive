@@ -543,7 +543,36 @@ select array_contains(a, 'test') from t1;
 ## Bucketing
 
 
-create table t1(a int,  b string, cstring) clustered (b) into 256 buckets
++ Tables of Partitions can be bucketed
++ Bucketing is an approach to distribute or cluster table data
+  + More efficient compiling
+  + Better performance with Map-side joins
+  + Used with partition  or w/o when partitiong doesn't work for your data set
++ Buckets can also be sorted
+  + Sort-Merge-Bucket(5MB))joins
++ Hive doesn't control or enforce bucketing on data loaded into table
++ 2 aproaches
+  
+set mapred.reduce.tasks=64;
+insert overwrite table t1 select a, b, c from t2 cluster by b;
+
+or
+
+set hive.enforce.bucketing=true;
+insert overwrite table t1 select a, b, c from t2;
+
+
+Number of reducers and hence number of output files equals the number of buckets
+
+Sampling data becomes a simple task.
+
+
+create table t1(a int,  b string, c string) clustered by (b) into 256 buckets
+
+create table t1(a int,  b string, c string) 
+partitioned by (dt string)
+clustered by (b) sorted by (c) into 256 buckets
+
 
 
 
