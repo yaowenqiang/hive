@@ -402,10 +402,10 @@ from from_statement
 
 + Default maxinum dynamic partitions=1000
   + hive.exec.max.dynamic.partitions
-  + hive.exec.max.dynamic.partitions.permode
+  + hive.exec.max.dynamic.partitions.pemode
 + Enable/Disbale dynamic partitions inserts
   + hive.exec.dynamic.partition=true
-+ Use stric mode when in doubt
++ Use strict mode when in doubt
   + hive.exec.dynamic.partition.mode=strict
 + Increase max number of files a data node can service in (hdfs-sit.xml)
   + dfs.datanode.max.xclevers=4096
@@ -427,6 +427,19 @@ row format delimited
 fields terminated by "\t"
 location '/data/logs/multi_insert';
 
+create  table staging(
+logtime string,
+userid int,
+ip string,
+page string,
+ref string,
+os string,
+os_ver string,
+agent string)
+row format delimited
+fields terminated by "\t";
+
+
 '''
 
 > hadoop fs -mkdir /logs/multi_insert/
@@ -438,6 +451,8 @@ insert into table page_views partition(y, m, d)
 select logtime, useerid, ip, page, ref, os, os_ver, agent, substr(logtime, 7,4), substr(lgtiem, 1,2), substr(logtime, 4,2)
 from staging;
 
+> Not everything results in partition pruning.
+
 # Hive Query Language
 
 
@@ -446,6 +461,8 @@ select
 from t1
 group by
     a, b
+
+## grouping sets, cube, rollup
 
 
 select a, b, sum(c) from t1 group by a, b, grouping sets ((a, b), a)
@@ -528,7 +545,110 @@ size(Map]<K,V>)
 map_keys(Map<K,V>)
 map_values(Map<K,v>)
 select array_contains(a, 'test') from t1;
+
 '''
+
++ Date
+
+unix_timestamp()
+year(string d), month(string d), day(string d), hour, second
+datediff(string enddate, string startdate)
+date_add(string startdate , int days)
+date_sub(string startdate, int days)
+to_date(string timestamp)
+
++ Conditional
+
+select if(a = b, 'true result', 'false result') from t1;
+select coalesce(a,b, c) from t1;
+select case a when 123 then 'first' when 456 then 'second' else 'none' end from t1;
+select case when a = 13 then c else d end ffrom t1;
+
++ String 
+
+select concat(a,b) from t1;
+select concat_ws(sep, a,b) from t1;
+select regex_replace('Hive Rocks', 'ive', 'hadoop') from dumy;
+select substr(string|binary a, int start)
+select substr(string|binary a, int start, int length)
+select substring(string|binary a, int start, int length)
+select sentences(string, str, string lang, string locale);
+select sentences("loving this course! Hive is awesome.") from dummy;
+
++ Built-in Aggregate Functions(UDAFs)
+
+count(*)
+count(expr)
+count(distinct expr)
+sum(col)
+sum(distinct col)
+
+avg
+min
+max
+variance
+stdev_pop
+histogram_numeric(col, b)
+returns array<struct {'x', 'y'>}
+
+
++ Having & group by
+
+Having syntax
+
+select
+    a, b, sum(c)
+from
+    t1
+group by
+    a,b
+having 
+    sum(c) > 2
+
+
+
+group by on function
+
+select 
+    concat(a,b) as r,
+    sum(c)
+from 
+    t1
+group by 
+    concat(a,b)
+having
+    sum(c) > 2
+
+
+## Sorting in Hive
+
+ORDER BY
+
+select x, y, z from t1 order by x asc;
+
+
+SORT BY
+
+select x, y, z from t1 sort by x;
+
+
+controlling Data Flow
+
+distribute by 
+
+
+select x, y, z from t1 distribute by y;
+
+
+distribute by with sort by
+
+select x, y, z from t1 distribute by y sort by z;
+
+
+cluster by
+
+select x, y, z from t1 cluster by y
+
 
 ## The CLI
 
