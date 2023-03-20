@@ -659,6 +659,27 @@ select x, y, z from t1 cluster by y
 
 ## Variable Substitution
 
+4 namespaces
+
++ hivevar
+  + -d -define, -hivevar
+  + set hivevar:name=value
+
++ hiveconf
+  + -hiveconf
+  + sethiveconf:property=value
++ system
+  + set system:property=value
++ env
+  + set env:property=value
+
+hive -d srctable=movies
+
+hive > set hivevar:cond=123
+hive> select a,b,c from pluralsight.${hivevar:sorctable} where a = ${hivevar:cond};
+
+hive -v -d src=movies -d db=pluralsight -e 'select * from ${hivevar:db}.${hivevar:src} limit 100;'
+
 
 ## Bucketing
 
@@ -670,6 +691,16 @@ select x, y, z from t1 cluster by y
   + Used with partition  or w/o when partitiong doesn't work for your data set
 + Buckets can also be sorted
   + Sort-Merge-Bucket(5MB))joins
+
+create table t1(a int, b string, c string) clustered by (b)  into 256 buckets;
+
+create table t1(a int, b string, c string) 
+partitioned by(dt string)
+clustered by (b)  sorted by (c) into 64 buckets;
+
+
+
+
 + Hive doesn't control or enforce bucketing on data loaded into table
 + 2 aproaches
   
@@ -700,6 +731,28 @@ clustered by (b) sorted by (c) into 256 buckets
 
 
 select * from source tablesample(bucket x out of y[on colname])
+
+create table page_views(userid int, page string, views int) 
+partitioned by (dt string)
+clustered by (userid) sorted by (dt) into 64 buckets;
+
+
+select * from page_views tablesample(bucket 3 out of 64 on userid);
+select * from page_views tablesample(bucket 3 out of 64 on rand());
+
+## Block sampling
+
++ Based on HDFS blocks(64/128/256 etc.)
++ Percentage of data size (notice this is note # of rows)
++ Returns at least the percentage specified
++ Doesn't always work
+  + Depends on compression and input format(CombineHiveInputFormat)
+
+### Block Sampling Syntax
+
+select * from source tablesample (n percent);
+select * from source tablesample (n M);
+select * from source tablesample (n rows);
 
 
 ## Join
