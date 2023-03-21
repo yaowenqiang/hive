@@ -757,6 +757,17 @@ select * from source tablesample (n rows);
 
 ## Join
 
+Join types
+
++ JOIn(inner join)
++ Left, RIGHT, FULL(OUTER] JOIN
++ LEFT SEMI JOIN
++ CROSS JOIN)
+
+
+Equality joins only(equi-joins)
+
+
 ### Inner join
 
 select a.val, b.val from a join b on (a.key = b.key)
@@ -775,6 +786,51 @@ select a.val from a left semi join b on (a.key = b.key);
 
 
 ### cross join
+
+select a.*, b.* from a cross join b
+
+
+STREAMING
+
+select a.*, b.*, c.*
+from a
+left join b on (a.key = b.key)
+join c on (a.xyz = c.xyz)
+
+
+select streamable(a )a.*, b.*, c.*
+from a
+left join b on (a.key = b.key)
+join c on (a.xyz = c.xyz)
+
+
+Joins- Merging MR JObs
+
+select a.*, b.*, c.*
+from a
+left join b on (a.key = b.key)
+join c on (a.key = c.key)
+
+
+
+Map-size Joins
+
++ ALL tables involoved in a join are small enough to fit into memory except which is streamed through the mapper
++ Hash table is used
+
+select map join(b) a.* b.* from a
+join b on (a.key = b.key)
+
++ No Full or right Outer Joins
++ No UNIONs between multiple queries
+
+
+
+
+
+
+
+
 
 ### bucketed tables
 
