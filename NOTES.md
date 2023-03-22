@@ -825,6 +825,40 @@ join b on (a.key = b.key)
 + No UNIONs between multiple queries
 
 
+set hive.auto.convert.join = true
+select a.*,b.* from a
+join b on (a.key = b.key)
+
+
+
+Map-side Joins for Bucketed Tables
+
+Buckets can be joined with each other ()Map-side Join) when:
+
++ Table being joined are bucketed on join columns(Clustered)
++ Number of buckets in one table is a mulitple of the number of buckets in the other table
++ Set hive.optimize.bucket.mapjoin=true
+
+Sort.Marge.Join
+
++ Table being joined are bucketed on join columns(Clustered)
++ The have the same number of buckets
++ Buckets are also sorted
+
+hive.input.format=org.apache.hadoop.hive.qo.io.BucketizedHiveInputformat;
+hive.optimize.bucket.mapjoin=true
+hive.optimize.bucket.mapjoi.sortedmegen=true
+
+
+
+## Distributed Cache
+
++ An approach usec by MapReduce to distribute files across data nodes
++ Provides a means for data nodes to access files local to the data node itself(cashed copy)
++ Typically used with 
+  + Text files
+  + Archiveds(compressed file)
+  + Jars and other program files.
 
 
 
