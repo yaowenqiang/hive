@@ -859,6 +859,36 @@ hive.optimize.bucket.mapjoi.sortedmegen=true
   + Text files
   + Archiveds(compressed file)
   + Jars and other program files.
++ Used to distribute hash archive of a table for Map-Side jobs
+
+addfile mydata.txt;
+add archive sendme.zip;
+add jar myprogram.jar;
+listfiles|jars|archives| [filepath]
+
+Table-Generating Functions(UDTF)
+
+Advanced Hive Functions
+
+
+Explode()
+
++ Take array as input
++ No other expresions allowed in SELECT
++ Can't be nested
++ group by / cluster by /Distribute by / sort not supported
+
+Lateral View
+
++ Table UDTF function as input
++ Provides virtual table for accessing combined results
+
+
+select a, b, columnAlias
+from baseTable
+lateral view udtf(expression) tableAlias as columnAlias;
+
+select explode(actors) as a from movies;
 
 
 
