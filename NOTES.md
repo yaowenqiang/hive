@@ -888,7 +888,20 @@ select a, b, columnAlias
 from baseTable
 lateral view udtf(expression) tableAlias as columnAlias;
 
+select a, b, col1, col2
+from baseTable
+    lateral view(udtf(x) t1 as col1,
+    lateral view udtf(col1) t2 as col2;
+    )
+
 select explode(actors) as a from movies;
+
+select movie_id, title, actor from movies lateral view explode(actors) actorTable as actor;
+
+
+outer lateral views
+
+select movie_id, title, actor from movies lateral view outer  explode(actors) actorTable as actor;
 
 
 
