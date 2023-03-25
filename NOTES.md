@@ -909,6 +909,8 @@ select movie_id, title, actor from movies lateral view outer  explode(actors) ac
 
 
 
+
+
 ### bucketed tables
 
 
