@@ -904,10 +904,20 @@ outer lateral views
 select movie_id, title, actor from movies lateral view outer  explode(actors) actorTable as actor;
 
 
+## using UDF
+
+> yum install java-devel
 
 
+> java -target 1.0 -cp $(ls /usr/lib/hive/lib/hive-exec*.jar);/usr/lib/hadoop/hadoop-core.jar com/my/udf.ava
+
+> java -cf myudf.jar com/my/udf.jar
 
 
+> hive > jad_jar /path/to/jar
+> hive > create temporary function revs as  'com.my.udf.myfunc';
+
+> list jars
 
 
 
