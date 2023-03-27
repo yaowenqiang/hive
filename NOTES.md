@@ -919,6 +919,24 @@ select movie_id, title, actor from movies lateral view outer  explode(actors) ac
 
 > list jars
 
+## What about the TEMPORARY function
+
++ Function only exists in current user's session
+| use the -i option when launching hive from the command line
+  + Provide a initialization file
++ Use the .hiverc file
+  + User's home directory
+  + Hive's bin directory /usr/lib/hive/bin/
+
+
+##Distributed Cache, Again
+
++ Hive functions are add to the distributed cache
++ Accessing files on the distributed cache is just a matter of referencing the file
+
+> File f = new File("./samplefile.csv")
+
+
 
 
 ### bucketed tables
