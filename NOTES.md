@@ -936,6 +936,35 @@ select movie_id, title, actor from movies lateral view outer  explode(actors) ac
 
 > File f = new File("./samplefile.csv")
 
+## Hadoop Streaming
+
++ Customize Hive using a different language
++ Data is Streamed throught standard in/out
++ transform
++ Map, REDUCe
+  + Don't confuse with actual Map and Reduce ,these are just syntactical sugar
+  + Primarily introduced to minimize the work required to create Reduce code by eliminating boilerplate code
++ Cluster By, Distribute By, Sort By
+  + Esential with streaming for performance
+  + Part of the algorithm to solve the problem
+
+
+## tRANSFORM
+
+Syntax
+
+> select transform (col1, [,col2, coln])
+> using 'Code File | Program' a[as (list of columns [and casts)])]
+from SourceTable;
+
++ Columns are sent as tab separated string (default)
+
++ Null values are replaced with literal "\N"
+
++ Specifying list of output columns is optional, if not provided:
+  + First column is the key,
+  + Remaing string is the value, even if there are multiple tabs(columns)
+  + Key column referenced using key
 
 
 
