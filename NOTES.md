@@ -967,6 +967,30 @@ from SourceTable;
   + Key column referenced using key
 
 
+select transform (movie_title)
+using '/bi/sed "s/[Y ][Y ]*/(&)/g"' as movie_title_parantheses from db.movies;
+
+
+* "programming Hive"
+
+> grymoire.com/Unix/Sed.html
+
+## Windowsing and Analytics Functions
+
++ LEAD/LAG
++ FIRST_VALUE
++ LAST_VALUE
++ PARTITION BY
++ OVER clause
+
+
+Window clause to provide window specification
+
+rank, row_number, dense_rank
+cume_dist,
+percent_rank,
+ntile> 
+
 
 ### bucketed tables
 
