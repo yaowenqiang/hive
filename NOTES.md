@@ -992,6 +992,20 @@ percent_rank,
 ntile> 
 
 
+## Storage 
+
+
+create table  ...
+
+row format delimited
+    fields terminated by '\001'
+    collection items terminated by '002'
+    map keys terminated by '\003'
+    lines terminated by '\n'
+stored as textfile
+
+
+
 ### bucketed tables
 
 
