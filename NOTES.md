@@ -1005,6 +1005,13 @@ row format delimited
 stored as textfile
 
 
+### File Formats
+
++ TExt file
++ Sequence File ( Stored as sequencefile )
++ RCFile ( sotred as rcfile )
++ ORCFile ( stored as ORC )
+
 
 ### bucketed tables
 
