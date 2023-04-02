@@ -1012,6 +1012,110 @@ stored as textfile
 + RCFile ( sotred as rcfile )
 + ORCFile ( stored as ORC )
 
+## HCatalog
+
++ Set of interfaces(APIs) and metadata service
++ Doesn't re-invent a meta-store that already works well
+  + Sits on top of Hive's meta-store
++ Centralized metadata services for the Hadoop eco-system
+Gives tools like Apache Pig and MapReduce an abstraction layer
+  + Databases, tables, partitions, etc
+  + File storage format and location
++ Access through the CLI
+
+> hcat -e "describe db.table'
+> hcat -e "show tables from db"
+
++ REST API
++ Usage within PIG
+
+A = load 'db.table' using HCatLoader();
+B = filter A by name = "filter "
+
+
+## Sqoop (SQL-to-Hadoop)
+
++ Transfer data to and from relational databases
++ Anything with a JDBC driver
++ Specific optimization working with MySQL
+
+> sqoop --connect jdbc:mysql://serverURI  --table flights --hive-import
+
++ Parallel import 
+  + Launches multiple mappers, each with a subset of the query
+    + Default 4 map tasks
+  By default Sqoop identifies the primary key if present
+
+> sqoop import --connect <connect-str> --passwordFile $(username)/.password \
+  --query 'SELECT a,x,b.y from a join b on (a.id = b.id) where $conditions' \
+  -- split-by a.userid --target-dir /somelocation/on/hdfs/mydata
+  [-m[-num-mappers number]]
+
++ Incremental Imports
+  + Append
+    + Increasing Row IDs
+  + Last Modified
+    + Records that are updated
+  --check-column to specify which column to use
+
+> http://sqoop.apache.org/docs/1.4.4/SqoopUserGuide.html
+
+## DistCP Version 2
+
++ Tool used to copy large amounts of data
+  + Within a cluster
+  + toFrom different cluster
++ Use MapReduce underneath to parallelize and achieve fuult tolerance
+
+
+> hadoop discp2 hdfs://hn1.8020/my/data hdfs://nn2:8020/copyo/of/my
+
++ Options to Update and Overwrite
+  + -update
+  + -overwrite 
+
+## Other Eco-System Projects
+
++ Scalding
+  + Based on Scala
+  + Create by and extensively at Twitter
++ Apache Mahout
++ Impala
+  + Fairly new
+  + Created by Cloudera to address "Real-time" querying for Hadoop
+  + Not as mature as Hive
++ Apache Drill
+  + Based on Google Dremel
+  + Interactive
+  + Nested data
+  + Potentially an execution for Hive
++ Storm
+  + Streaming
+
+
+## Reference And Resources
+
++ Wiki 
+  + http://hadoop.apache.org
++ Apache Hive Wiki and Language Manual
+  + https://cwiki.apache.org/confluence/display/Hive/Home
+  + https://cwiki.apache.org/confluence/display/Hive/LanguageManual
++ Programming Hive - Book
++ Hadoop The Definitive Guide - book
++ Sqoop
+  + http://sqoop.apache.org
++ DistCP Version 2
+  + http://hadoop.apache.org/docs/r1.2.0/distcp2.html
++ Apache Drill
+  + http://incubator.apache.org/drill/
++ Hortonworks Docs
+  + http://docs.hortonworks.com
++ Hadoop Eclipse Plug-in
+  + http://wiki.apache.org/hadoop/EclipsePlugin
++ Develop CDH Applications with Maven and Eclipse
+  + http://blog.cloudera.com/blog/2012/08/developing-cdh-application-with-maven-and eclipse/
++ apache BigTop
+  + http://apachebigtop.pbworks.com/w/page/48434924/FrontPage
 
 ### bucketed tables
 
